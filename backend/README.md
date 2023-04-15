@@ -2,10 +2,9 @@
 
 ## Structure
 ```
-  /src
-    /controllers
-    /models
-    /routes
-    /services
+  controllers
+  models
+  bp (routes)
+  services
   /data
 ```
