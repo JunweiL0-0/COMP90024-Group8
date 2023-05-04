@@ -1,0 +1,46 @@
+---
+# Create an instance on NeCTAR
+- name: Create an instance
+  openstack.cloud.server:
+    name: "{{ item.name }}"
+    auto_floating_ip: false
+    availability_zone: "{{ availability_zone }}"
+    flavor: "{{ instance_flavor }}"
+    image: "{{ instance_image }}"
+    key_name: "{{ instance_key_name }}"
+    # network: "{{ instance_network }}"
+    security_groups: "{{ sg_names }}"
+    timeout: 600
+    volumes: "{{ item.volumes }}"
+    state: present
+    wait: true
+  loop: "{{ instances }}"
+  register: os_instance
+
+- ansible.builtin.debug:
+    msg: "Instance {{ item.server.name }} has been created. IP address is {{ item.server.access_ipv4 }}"
+  loop: "{{ os_instance.results }}"
+  when: item.server is defined
+
+- name: Wait for connection
+  ansible.builtin.wait_for:
+    host: "{{ item.server.access_ipv4 }}"
+    port: 22
+    timeout: 120
+    search_regex: OpenSSH
+  loop: "{{ os_instance.results }}"
+  when: item.server is defined
+
+# Add hosts to Ansible in-memory inventory
+- name: Add host
+  ansible.builtin.add_host:
+    name: "{{ item.server.access_ipv4 }}"
+    groups: COMP90024
+  loop: "{{ os_instance.results }}"
+  when: item.server is defined
+
+  # template groups of hosts out to a target Inventory
+  name: Template hosts into inventory
+  ansible.builtin.template:
+   src: ./roles/create-instance/templates/template.j2
+   dest: ./inventory/hosts
