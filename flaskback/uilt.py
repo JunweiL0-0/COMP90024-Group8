@@ -1,5 +1,4 @@
 import requests
-from couchdb2 import Server, CreationError
 from dotenv import load_dotenv
 import os
 

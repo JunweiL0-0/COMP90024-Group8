@@ -6,33 +6,15 @@ from uilt import Util
 class Model:
     util = Util()
 
-    def index(self):
-        message = {'message': "Welcome! Please use the following endpoints:", 'endpoints': []}
-        message['endpoints'].append('/designs: to retrieve all the designs from a database. Please provide the db '
-                                    'name as a query parameter. eg: /designs?db=example')
-        message['endpoints'].append('/dbs: to retrieve all the databases')
-        message['endpoints'].append('/view: to retrieve a view from a database. Please provide the db name as a query '
-                                    'parameter. eg: /view?db=example?document=example_doc?view=example_view')
-        message['endpoints'].append('/upload/pdf: to upload a pdf file. Please provide the file name as a query '
-                                    'parameter. eg: /upload/pdf?file_name=example.pdf')
-        message['endpoints'].append('/upload/jpg: to upload a jpg file. Please provide the file name as a query '
-                                    'parameter. eg: /upload/jpg?file_name=example.jpg')
-        message['endpoints'].append('/retrieve/pdf: to retrieve a pdf file. Please provide the file name as a query '
-                                    'parameter. eg: /retrieve/pdf?file_name=example.pdf')
-        message['endpoints'].append('/retrieve/jpg: to retrieve a jpg file. Please provide the file name as a query '
-                                    'parameter. eg: /retrieve/jpg?file_name=example.jpg')
-        return Response(json.dumps(message), status=200, mimetype='application/json')
-
-    def get_all_design_from_db(self, request):
+    def get_all_design_from_db(self, db_name):
         """
         The function returns all the designs from a database
         Couchdb will handle most of the errors and return the appropriate response
         The internal server error is handled locally and the response will be sent
 
-        :param request: a request object
+        :param db_name: a string value of the database name
         """
         try:
-            db_name = request.args.get('db')
             couchdb_res = self.util.get_all_designs(db_name)
 
             res_to_return = Response()
@@ -47,11 +29,9 @@ class Model:
             res_to_return.status_code = 500
             return res_to_return
 
-    def get_all_dbs(self, request):
+    def get_all_dbs(self):
         """
         The function returns all the databases
-
-        :param request: a request object
         """
         try:
             couchdb_res = self.util.get_all_dbs()
@@ -68,18 +48,17 @@ class Model:
             res_to_return.status_code = 500
             return res_to_return
 
-    def get_view(self, request):
+    def get_view(self, db_name, document_name, view_name):
         """
         The function returns a view from a database
         Couchdb will handle most of the errors and return the appropriate response
         Internal server will be handled and send
 
-        :param request: a request object
+        :param db_name: a string value of the database name
+        :param document_name: a string value of the document name
+        :param view_name: a string value of the view name
         """
         try:
-            db_name = request.args.get('db')
-            document_name = request.args.get('document')
-            view_name = request.args.get('view')
             couchdb_res = self.util.get_view(db_name, document_name, view_name)
 
             res_to_return = Response()
@@ -94,29 +73,37 @@ class Model:
             res_to_return.status_code = 500
             return res_to_return
 
-    def save_file(self, request, is_pdf=False, is_jpg=False):
+    def save_file(self, data, file_name):
         """
         This function will save file locally and return a valid response
 
-        :param request: a request object
-        :param is_pdf: a boolean value to check if the file is pdf
-        :param is_jpg: a boolean value to check if the file is jpg
+        :param data: a byte array of the file
+        :param file_name: a string value of the file name
         """
         try:
-            if is_pdf:
-                path_to_write = f"static/{request.args.get('file_name')}.pdf"
+            if file_name is None:
+                res_to_return = Response()
+                res_to_return.response = "File Name is Required"
+                res_to_return.headers['Content-Type'] = 'text/plain'
+                res_to_return.status_code = 400
+                return res_to_return
+            elif len(data) == 0:
+                res_to_return = Response()
+                res_to_return.response = "File is Required"
+                res_to_return.headers['Content-Type'] = 'text/plain'
+                res_to_return.status_code = 400
+                return res_to_return
             else:  # is_jpg
-                path_to_write = f"static/{request.args.get('file_name')}.jpg"
-            file_to_write = open(path_to_write, 'wb')
-            file_to_write.write(request.data)
-            file_to_write.close()
+                path_to_write = f"static/{file_name}.jpg"
+                file_to_write = open(path_to_write, 'wb')
+                file_to_write.write(data)
+                file_to_write.close()
 
-            res_to_return = Response()
-            res_to_return.response = "File Created"
-            res_to_return.headers['Content-Type'] = 'text/plain'
-            res_to_return.status_code = 201
-            return res_to_return
-
+                res_to_return = Response()
+                res_to_return.response = "File Created"
+                res_to_return.headers['Content-Type'] = 'text/plain'
+                res_to_return.status_code = 201
+                return res_to_return
         except Exception as e:
             res_to_return = Response()
             res_to_return.response = f"Internal Server Error When Saving File: {e}"
@@ -124,31 +111,33 @@ class Model:
             res_to_return.status_code = 500
             return res_to_return
 
-    def retrieve_file(self, request, is_jpg=False, is_pdf=False):
+    def retrieve_file(self, file_name):
         """
         This function will retrieve file locally and return a valid response
 
-        :param request: a request object
-        :param is_jpg: a boolean value to check if the file is jpg
-        :param is_pdf: a boolean value to check if the file is pdf
+        :param file_name: a string value of the file name
         """
         try:
-            if is_pdf:
-                file_path = f"static/{request.args.get('file_name')}.pdf"
+            if file_name is None:
+                res_to_return = Response()
+                res_to_return.response = "File Name is Required"
+                res_to_return.headers['Content-Type'] = 'text/plain'
+                res_to_return.status_code = 400
+                return res_to_return
             else:  # is_jpg
-                file_path = f"static/{request.args.get('file_name')}.jpg"
-            file_to_read = open(file_path, 'rb')
-            file_data = file_to_read.read()
-            file_to_read.close()
+                file_path = f"static/{file_name}.jpg"
+                file_to_read = open(file_path, 'rb')
+                file_data = file_to_read.read()
+                file_to_read.close()
 
+                res_to_return = Response()
+                res_to_return.data = file_data
+                res_to_return.headers['Content-Type'] = 'image/jpeg'
+                res_to_return.status_code = 200
+                return res_to_return
+        except FileNotFoundError:
             res_to_return = Response()
-            res_to_return.data = file_data
-            res_to_return.headers['Content-Type'] = 'application/pdf' if is_pdf else 'image/jpeg'
-            res_to_return.status_code = 200
-            return res_to_return
-        except FileNotFoundError as e:
-            res_to_return = Response()
-            res_to_return.response = f"File Not Found: {e}"
+            res_to_return.response = f"File Not Found: {file_name}.jpg"
             res_to_return.headers['Content-Type'] = 'text/plain'
             res_to_return.status_code = 404
             return res_to_return
@@ -158,3 +147,12 @@ class Model:
             res_to_return.headers['Content-Type'] = 'text/plain'
             res_to_return.status_code = 500
             return res_to_return
+
+    def index(self):
+        message = {"endpoints": ["/",
+                                 "/dbs",
+                                 "/<db_name>/designs",
+                                 "/<db_name>/_design/<document_name>/_view/<view_name>",
+                                 "/upload/jpg/<file_name>",
+                                 "/retrieve/jpg/<file_name>"]}
+        return Response(json.dumps(message), status=200, mimetype='application/json')
