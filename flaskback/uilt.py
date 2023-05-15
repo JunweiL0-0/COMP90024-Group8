@@ -26,18 +26,22 @@ class Util:
         """
         return requests.get(f"{self.base_url}/{db_name}/_design_docs")
 
-    def get_view(self, db_name, document_name, view_name, reduce=True, group_level=1):
+    def get_view(self, db_name, document_name, view_name, request_args):
         """
         GET /{db}/_design/{ddoc}/_view/{view}
 
         :param db_name: a string represent the name of the db
         :param document_name: a string represent the name of the document
         :param view_name: a string represent the name of the view
-        :param reduce: a boolean represent whether to reduce the result
-        :param group_level: an integer represent the level of grouping
+        :param request_args: a request.args object
         :return: a json object represent the view of the db
         """
-        return requests.get(f"{self.base_url}/{db_name}/_design/{document_name}/_view/{view_name}?reduce={reduce}&group_level={group_level}")
+        args = ""
+        if len(request_args) > 0:
+            tmp = [f"{key}={value}" for key, value in request_args.items()]
+            args = "&".join(tmp)
+            args = '?' + args
+        return requests.get(f"{self.base_url}/{db_name}/_design/{document_name}/_view/{view_name}{args}")
 
     def get_all_dbs(self, ):
         """

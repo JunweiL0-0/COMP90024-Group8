@@ -52,7 +52,7 @@ def view(db_name, document_name, view_name):
     """
     The function returns a view from a database's design document
     """
-    return model.get_view(db_name, document_name, view_name)
+    return model.get_view(db_name, document_name, view_name, request)
 
 
 if __name__ == '__main__':
