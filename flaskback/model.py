@@ -48,7 +48,7 @@ class Model:
             res_to_return.status_code = 500
             return res_to_return
 
-    def get_view(self, db_name, document_name, view_name):
+    def get_view(self, db_name, document_name, view_name, request):
         """
         The function returns a view from a database
         Couchdb will handle most of the errors and return the appropriate response
@@ -57,9 +57,10 @@ class Model:
         :param db_name: a string value of the database name
         :param document_name: a string value of the document name
         :param view_name: a string value of the view name
+        :param request: a request object
         """
         try:
-            couchdb_res = self.util.get_view(db_name, document_name, view_name)
+            couchdb_res = self.util.get_view(db_name, document_name, view_name, request.args)
 
             res_to_return = Response()
             res_to_return.response = couchdb_res
