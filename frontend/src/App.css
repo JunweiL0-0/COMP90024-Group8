@@ -1,0 +1,183 @@
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 15%;
+  background-color: #FFFFFF;
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+.sidebar button {
+  background-color: #FFFFFF;
+  color: #2a2a27;
+  font-size: 20px;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.sidebar button:hover {
+  background-color: #e8ded9;
+  color: #48453f;
+  border: 1px solid #abb4d0;
+  cursor: pointer;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sidebar a:visited {
+  color: inherit;
+}
+
+.content {
+  width: 85%;
+  background-color: #e1e9f1;
+
+  box-sizing: border-box;
+}
+
+.home {
+  background-color: #efe0d9;
+}
+
+.statistics {
+  background-color: #dbc3b7;
+}
+
+.rounded-box {
+  border-radius: 8px;
+  background: #FFFFFF;
+  min-width: 100px;
+  max-width: 100%;
+  margin: 8px;
+}
+
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+h1{
+  text-align: center;
+  font-size: 18px;
+  margin: 3px;
+}
+
+h2{
+  text-align: center;
+}
+
+.box-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.box2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  background: #FFFFFF;
+  width: 25%;
+  height: 15vh;
+  margin: 10px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.box2 p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.box2 img {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+}
+
+.box2 h3{
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  font-size: 26px;
+  color: #11396e;
+}
+
+.box2 h4{
+  position: absolute;
+  top: 35px;
+  left: 3px;
+  font-size: 26px;
+  color: #7d99bf;
+}
+
+.box3 {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  width: 50%;
+  height: 78vh;
+  margin: 10px;
+  border-radius: 5px;
+  overflow: auto;
+}
+
+.box4 {
+  width: 100%;
+  height: 20px;
+  background: #2560a9;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  height: 20px;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.button-container button {
+  width: 50%;
+  height: 20px;
+  background-color: #2560a9;
+  color: white;
+  border: none;
+}
+
+.button-container button.selected {
+  background-color: white;
+  color: #143d73;
+}
+
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-popup {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 3px;
+}
+
