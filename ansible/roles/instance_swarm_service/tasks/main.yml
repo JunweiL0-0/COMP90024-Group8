@@ -81,5 +81,5 @@
         published_port: "{{ react_front.published_port }}"
         mode: "{{ react_front.mode }}"
     env:
-      REACT_APP_URL: "{{ hostvars['localhost']['worker_ip'] }}:5984/"
+      REACT_APP_URL: "http://{{ hostvars['localhost']['worker_ip'] }}:8080/"
     replicas: "{{ react_front.replicas }}"
