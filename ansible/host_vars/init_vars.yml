@@ -1,0 +1,115 @@
+# Common vars
+availability_zone: melbourne-qh2-uom
+instance_image: bbaf16f8-2484-48d7-b455-42209cc4b8d2
+instance_key_name: id_jl
+instance_flavor: uom.mse.1c4g
+
+# Volume
+volumes:
+  - vol_name: scaling-1-vol
+    vol_size: 25
+  - vol_name: scaling-2-vol
+    vol_size: 25
+  - vol_name: scaling-3-vol
+    vol_size: 25
+  - vol_name: scaling-4-vol
+    vol_size: 25
+
+# Security group
+security_groups:
+  - name: ssh
+    description: "security grp for ssh"
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+    remote_ip_prefix: 0.0.0.0/0
+  - name: http
+    description: "security grp for HTTP"
+    protocol: tcp
+    port_range_min: 80
+    port_range_max: 81
+    remote_ip_prefix: 0.0.0.0/0
+  - name: https
+    description: "security grp for HTTPS"
+    protocol: tcp
+    port_range_min: 443
+    port_range_max: 443
+    remote_ip_prefix: 0.0.0.0/0
+  - name: dok_swarm_mng
+    description: "security grp for docker swarm"
+    protocol: tcp
+    port_range_min: 2376
+    port_range_max: 2377
+    remote_ip_prefix: 0.0.0.0/0
+  - name: dok_swarm_node_7946_tcp
+    description: "security grp for docker swarm node discovery"
+    protocol: tcp
+    port_range_min: 7946
+    port_range_max: 7946
+    remote_ip_prefix: 0.0.0.0/0
+  - name: dok_swarm_node_7946_udp
+    description: "security grp for docker swarm node discovery"
+    protocol: udp
+    port_range_min: 7946
+    port_range_max: 7946
+    remote_ip_prefix: 0.0.0.0/0
+  - name: dok_swarm_overlay_4789_udp
+    description: "security grp for docker swarm overlay"
+    protocol: udp
+    port_range_min: 4789
+    port_range_max: 4789
+    remote_ip_prefix: 0.0.0.0/0
+  - name: portainer_8000
+    description: "security grp for portainer"
+    protocol: tcp
+    port_range_min: 8000
+    port_range_max: 8000
+    remote_ip_prefix: 0.0.0.0/0
+  - name: portainer_9000
+    description: "security grp for portainer http ui"
+    protocol: tcp
+    port_range_min: 9000
+    port_range_max: 9000
+    remote_ip_prefix: 0.0.0.0/0
+  - name: portainer_9001
+    description: "security grp for portainer agent"
+    protocol: tcp
+    port_range_min: 9001
+    port_range_max: 9001
+    remote_ip_prefix: 0.0.0.0/0
+  - name: portainer_9443
+    description: "security grp for portainer https ui"
+    protocol: tcp
+    port_range_min: 9443
+    port_range_max: 9443
+    remote_ip_prefix: 0.0.0.0/0
+  - name: bak_end_8080
+    description: "security grp for backend"
+    protocol: tcp
+    port_range_min: 8080
+    port_range_max: 8080
+    remote_ip_prefix: 0.0.0.0/0
+  - name: proxy
+    description: "security grp for proxy"
+    protocol: tcp
+    port_range_min: 5984
+    port_range_max: 5984
+    remote_ip_prefix: 0.0.0.0/0
+  - name: front_3000
+    description: "security grp for frontend"
+    protocol: tcp
+    port_range_min: 3000
+    port_range_max: 3000
+    remote_ip_prefix: 0.0.0.0/0
+
+
+# Instances
+instances:
+  - name: scaling-1-leader
+    volumes: ["scaling-1-vol"]
+  - name: scaling-2-manager
+    volumes: ["scaling-2-vol"]
+  - name: scaling-3-manager
+    volumes: ["scaling-3-vol"]
+  - name: scaling-4-worker
+    volumes: ["scaling-4-vol"]

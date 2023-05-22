@@ -1,0 +1,37 @@
+---
+
+# Docker Swarm
+- name: check/init swarm leader
+  become: true
+  docker_swarm:
+    state: present
+    advertise_addr: "{{ hostvars['localhost']['leader_ip'] }}"
+  register: __output_swarm
+  when: inventory_hostname == hostvars['localhost']['leader_ip']
+
+- name: install one manager
+  become: true
+  docker_swarm:
+    state: join
+    timeout: 60
+    advertise_addr: inventory_hostname
+    remote_addrs: "{{ hostvars['localhost']['leader_ip'] }}:2377"
+    join_token: "{{ hostvars[groups['COMP90024'][0]]['__output_swarm']['swarm_facts']['JoinTokens']['Manager'] }}"
+    remote_addrs: "{{ hostvars['localhost']['leader_ip'] }}"
+  when: inventory_hostname == hostvars['localhost']['manager_1_ip'] or inventory_hostname == hostvars['localhost']['manager_2_ip']
+
+- name: install workers
+  become: true
+  docker_swarm:
+    state: join
+    timeout: 60
+    advertise_addr: inventory_hostname
+    remote_addrs: "{{ hostvars['localhost']['leader_ip'] }}:2377"
+    join_token: "{{ hostvars[groups['COMP90024'][0]]['__output_swarm']['swarm_facts']['JoinTokens']['Worker'] }}"
+    remote_addrs: "{{ hostvars['localhost']['leader_ip'] }}"
+  when: inventory_hostname == hostvars['localhost']['worker_ip']
+
+- name: Sleep for 5 seconds and continue with play
+  ansible.builtin.wait_for:
+    timeout: 5
+  delegate_to: localhost

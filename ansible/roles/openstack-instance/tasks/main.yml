@@ -1,0 +1,53 @@
+---
+# Create an instance on NeCTAR
+- name: Create an instance
+  openstack.cloud.server:
+    name: "{{ item.name }}"
+    auto_floating_ip: false
+    availability_zone: "{{ availability_zone }}"
+    flavor: "{{ instance_flavor }}"
+    image: "{{ instance_image }}"
+    key_name: "{{ instance_key_name }}"
+    security_groups: "{{ sg_names }}"
+    timeout: 600
+    volumes: "{{ item.volumes }}"
+    state: present
+    wait: true
+  loop: "{{ instances }}"
+  register: os_instance
+
+- ansible.builtin.debug:
+    msg: "Instance {{ item.server.name }}. IP address is {{ item.server.addresses['qh2-uom-internal'][0]['addr'] }}"
+  loop: "{{ os_instance.results }}"
+  when: item.server is defined
+
+- name: Register instance IP address
+  ansible.builtin.set_fact:
+    leader_ip: "{{ os_instance.results[0].server.addresses['qh2-uom-internal'][0]['addr'] }}"
+    manager_1_ip: "{{ os_instance.results[1].server.addresses['qh2-uom-internal'][0]['addr'] }}"
+    manager_2_ip: "{{ os_instance.results[2].server.addresses['qh2-uom-internal'][0]['addr'] }}"
+    worker_ip: "{{ os_instance.results[3].server.addresses['qh2-uom-internal'][0]['addr'] }}"
+- debug:
+    msg: "{{leader_ip}} {{manager_1_ip}} {{manager_2_ip}} {{worker_ip}}"
+
+- name: Wait for connection
+  ansible.builtin.wait_for:
+    host: "{{ item.server.addresses['qh2-uom-internal'][0]['addr'] }}"
+    port: 22
+    timeout: 120
+    search_regex: OpenSSH
+  loop: "{{ os_instance.results }}"
+  when: item.server is defined
+
+# Add hosts to Ansible in-memory inventory
+- name: Add host to known hosts
+  ansible.builtin.add_host:
+    name: "{{ item.server.addresses['qh2-uom-internal'][0]['addr'] }}"
+    groups: COMP90024
+  loop: "{{ os_instance.results }}"
+  when: item.server is defined
+
+- name: "Build hosts file"
+  lineinfile: dest=hosts regexp='.*{{ item }}$' line="{{ hostvars[item].ansible_default_ipv4.address }} {{item}}" state=present
+  when: hostvars[item].ansible_default_ipv4.address is defined
+  with_items: groups['all']

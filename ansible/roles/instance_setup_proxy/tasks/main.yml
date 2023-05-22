@@ -1,0 +1,21 @@
+---
+
+- name: "Install haproxy"
+  become: true
+  ansible.builtin.apt:
+    name: haproxy
+    state: present
+
+- name: Copy haproxy cfg file
+  become: yes
+  ansible.builtin.copy:
+    src: ../../static/haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+  register: result
+
+- name: Restart haproxy
+  become: yes
+  ansible.builtin.systemd:
+    name: haproxy
+    state: restarted
+  register: result

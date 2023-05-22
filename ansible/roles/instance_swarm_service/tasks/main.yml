@@ -1,0 +1,85 @@
+---
+
+- name: Create portainer 
+  become: true
+  docker_swarm_service:
+    name: "{{ portainer.name }}"
+    image: "{{ portainer.image }}"
+    state: "{{ portainer.state }}"
+    mode: "{{ portainer.service_mode }}"
+    publish:
+      - target_port: "{{ portainer.target_port }}"
+        published_port: "{{ portainer.published_port }}"
+        mode: "{{ portainer.mode }}"
+    mounts:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: volume
+        source: portainer_data
+        target: /data
+    env:
+      REACT_APP_URL: "{{ hostvars['localhost']['worker_ip'] }}:5984"
+
+- name: Deploy Mastodon masto
+  become: true
+  docker_swarm_service:
+    name: "{{ mastodon_masto.name }}"
+    image: "{{ mastodon_masto.image }}"
+    state: "{{ mastodon_masto.state }}"
+    env:
+      NAME: "{{ mastodon_masto.name }}"
+      TOKEN: "{{ mastodon_masto.token }}"
+      API_BASE_URL: "{{ mastodon_masto.api_base_url }}"
+      COUCHDB_URL: "{{ hostvars['localhost']['worker_ip'] }}:5984"
+      COUCHDB_USERNAME: "{{ mastodon_masto.couchdb_username }}"
+      COUCHDB_PASSWORD: "{{ mastodon_masto.couchdb_password }}"
+      DB_TO_UPLOAD: "{{ mastodon_masto.db_to_upload }}"
+    replicas: "{{ mastodon_masto.replicas }}"
+
+- name: Swarm mastodon social harvester
+  become: true
+  docker_swarm_service:
+    name: "{{ mastodon_masto_social.name }}"
+    image: "{{ mastodon_masto_social.image }}"
+    state: "{{ mastodon_masto_social.state }}"
+    env:
+      NAME: "{{ mastodon_masto_social.name }}"
+      TOKEN: "{{ mastodon_masto_social.token }}"
+      API_BASE_URL: "{{ mastodon_masto_social.api_base_url }}"
+      COUCHDB_URL: "{{ hostvars['localhost']['worker_ip'] }}:5984"
+      COUCHDB_USERNAME: "{{ mastodon_masto_social.couchdb_username }}"
+      COUCHDB_PASSWORD: "{{ mastodon_masto_social.couchdb_password }}"
+      DB_TO_UPLOAD: "{{ mastodon_masto_social.db_to_upload }}"
+    replicas: "{{ mastodon_masto_social.replicas }}"
+
+- name: Swarm flask backend
+  become: true
+  docker_swarm_service:
+    name: "{{ flask_backend.name }}"
+    image: "{{ flask_backend.image }}"
+    state: "{{ flask_backend.state }}"
+    publish:
+      - target_port: "{{ flask_backend.target_port }}"
+        published_port: "{{ flask_backend.published_port }}"
+        mode: "{{ flask_backend.mode }}"
+    env:
+      NAME: "{{ flask_backend.name }}"
+      USERNAME: "{{ flask_backend.username }}"
+      PASSWORD: "{{ flask_backend.password }}"
+      HOST: "{{ hostvars['localhost']['worker_ip'] }}:5984"
+    replicas: "{{ flask_backend.replicas }}"
+
+- name: Swarm frontend
+  become: true
+  docker_swarm_service:
+    name: "{{ react_front.name }}"
+    image: "{{ react_front.image }}"
+    state: "{{ react_front.state }}"
+    publish:
+      - target_port: "{{ react_front.target_port }}"
+        published_port: "{{ react_front.published_port }}"
+        mode: "{{ react_front.mode }}"
+    env:
+      REACT_APP_URL: "{{ hostvars['localhost']['worker_ip'] }}:5984/"
+    replicas: "{{ react_front.replicas }}"

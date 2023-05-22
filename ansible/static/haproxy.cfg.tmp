@@ -1,0 +1,32 @@
+global
+    maxconn 512
+    spread-checks 5
+
+defaults
+    mode http
+    log global
+    monitor-uri /_haproxy_health_check
+    option log-health-checks
+    option httplog
+    balance roundrobin
+    option forwardfor
+    option redispatch
+    retries 4
+    option http-server-close
+    timeout client 150000
+    timeout server 3600000
+    timeout connect 500
+
+    stats enable
+    stats uri /stats
+
+frontend http-in
+     bind *:5984
+     default_backend couchdbs
+
+backend couchdbs
+    option httpchk GET /_up
+    http-check disable-on-404
+    server couchdb1 *:5984 check inter 5s
+    server couchdb2 *:5984 check inter 5s
+    server couchdb3 *:5984 check inter 5s

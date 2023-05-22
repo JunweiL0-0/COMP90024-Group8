@@ -1,0 +1,58 @@
+# Mastodon / masto
+mastodon_masto:
+  name: mas-to-haverster
+  image: jl123/mastodon-harvester
+  token: Zk3_F_1kdWaPh4npGxDodvXbcNBf4Rbk5hC0MIYN3HI
+  api_base_url: https://mas.to
+  couchdb_username: admin
+  couchdb_password: admin
+  db_to_upload: mastodon_data
+  state: present
+  replicas: 1
+
+# Mastodon / mastodon social
+mastodon_masto_social:
+  name: mas-social-haverster
+  image: jl123/mastodon-harvester
+  token: 	0H4iPrG-QRFuoiDbVIh3k7r5RcxUIWpcH9KFGBAkS1U
+  api_base_url: https://mastodon.social
+  couchdb_username: admin
+  couchdb_password: admin
+  db_to_upload: mastodon_data
+  state: present
+  replicas: 1
+
+portainer:
+  name: portainer
+  image: portainer/portainer-ce
+  state: present
+  recreate: yes
+  restart_policy: always
+  target_port: 9000
+  published_port: 9000
+  mode: host
+  service_mode: global
+
+
+
+# Flask backend
+flask_backend:
+  name: flask-backend
+  image: jl123/flask-app
+  username: admin
+  password: admin
+  target_port: 8080
+  published_port: 8080
+  state: present
+  mode: ingress
+  replicas: 1
+
+# React front
+react_front:
+  name: react-front
+  image: naruxil/myapp
+  state: present
+  target_port: 3000
+  published_port: 3000
+  mode: ingress
+  replicas: 1

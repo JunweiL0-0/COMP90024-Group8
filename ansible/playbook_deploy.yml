@@ -1,0 +1,22 @@
+- hosts: localhost
+  gather_facts: true
+  vars_files:
+    - host_vars/init_vars.yml
+  roles:
+    - role: openstack-common
+    - role: openstack-volume
+    - role: openstack-security-group
+    - role: openstack-instance
+
+- hosts: COMP90024
+  gather_facts: true
+  vars_files:
+    - host_vars/scaling_vars.yml
+  roles:
+    - role: add_hosts
+    - role: instance_setup_enviroment
+    - role: instance_swarm_node
+    - role: instance_setup_proxy
+      when: inventory_hostname == hostvars['localhost']['worker_ip']
+    - role: instance_swarm_service
+      when: inventory_hostname == hostvars['localhost']['leader_ip']
