@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-. ./openrc.sh; ansible-playbook playbook_deploy.yml
+. ./openrc.sh; ansible-playbook -vv playbook_deploy.yml
 
 #OGU0MDI1MGE3NTJjODFj
