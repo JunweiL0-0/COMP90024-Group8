@@ -12,3 +12,5 @@ You can get all the endpoints by query '/'
 -- pip install -r requirements.txt
 
 -- python3 app.py
+
+-- remember to create .env and put your HOST USERNAE PASSWORD inside
