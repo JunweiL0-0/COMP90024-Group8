@@ -17,10 +17,13 @@ import PieChartMood from "../data/total_mood_pie";
 import PieChartCovid from "../data/covid_mood_pie";
 import CountMood from "../data/mood";
 import MyTable from "../data/table";
+import SentimentLineChart from "../data/sentiment_month";
+import GccMoodBar from "../data/covid_gcc_mood";
+
 
 const Statistics = () => {
     const [selectedChart1, setSelectedChart1] = useState('Total Tweets');
-    const [selectedChart2, setSelectedChart2] = useState('Total Mood');
+    const [selectedChart2, setSelectedChart2] = useState('Sentiment');
 
 
     return (
@@ -37,13 +40,13 @@ const Statistics = () => {
                     <CountTweet />
                 </div>
                 <div className="box2">
-                    <p>Covid Related Tweets</p>
+                    <p>COVID Related Tweets</p>
                     <img src={covidIcon} alt="" />
                     <CountCovid />
                 </div>
                 <div className="box2">
-                    <p>Mood</p>
-                    <img src={moodIcon}/>
+                    <p>Mood Related Tweets</p>
+                    <img src={moodIcon} alt="" />
                     <CountMood />
 
                 </div>
@@ -59,38 +62,38 @@ const Statistics = () => {
                             Total Tweets
                         </button>
                         <button
-                            className={selectedChart1 === 'Covid Tweets' ? 'selected' : ''}
-                            onClick={() => setSelectedChart1('Covid Tweets')}
+                            className={selectedChart1 === 'COVID Tweets' ? 'selected' : ''}
+                            onClick={() => setSelectedChart1('COVID Tweets')}
                         >
-                            Covid Tweets
+                            COVID Tweets
                         </button>
                     </div>
 
                     <div className="chart-container">
                         {selectedChart1 === 'Total Tweets' && <><TotalTweetsLineChart /><TotalTweetGcc /></>}
-                        {selectedChart1 === 'Covid Tweets' && <><CovidMonthLineChart /><CovidGccBarChart /><RichnessBarChart /><HospitalBarChart /></>}
+                        {selectedChart1 === 'COVID Tweets' && <><CovidMonthLineChart /><CovidGccBarChart /><RichnessBarChart /><HospitalBarChart /></>}
                     </div>
                 </div>
 
                 <div className="box3">
                     <div className="button-container">
                         <button
-                            className={selectedChart2 === 'Total Mood' ? 'selected' : ''}
-                            onClick={() => setSelectedChart2('Total Mood')}
+                            className={selectedChart2 === 'Sentiment' ? 'selected' : ''}
+                            onClick={() => setSelectedChart2('Sentiment')}
                         >
-                            Total Mood
+                            Sentiment
                         </button>
                         <button
-                            className={selectedChart2 === 'Covid Mood' ? 'selected' : ''}
-                            onClick={() => setSelectedChart2('Covid Mood')}
+                            className={selectedChart2 === 'COVID&Sentiment' ? 'selected' : ''}
+                            onClick={() => setSelectedChart2('COVID&Sentiment')}
                         >
-                            Covid Mood
+                            COVID&Sentiment
                         </button>
                     </div>
 
                     <div className="chart-container">
-                        {selectedChart2 === 'Total Mood' && <><PieChartMood /><SentimentGcc /></>}
-                        {selectedChart2 === 'Covid Mood' && <><PieChartCovid /><MyTable /></>}
+                        {selectedChart2 === 'Sentiment' && <><PieChartMood /><SentimentGcc /><MyTable /></>}
+                        {selectedChart2 === 'COVID&Sentiment' && <><PieChartCovid /><GccMoodBar /></>}
                     </div>
                 </div>
             </div>

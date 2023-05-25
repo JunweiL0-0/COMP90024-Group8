@@ -1,62 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
-// import axios from 'axios';
-//
-// const cityMap = {
-//     "1gsyd": "Sydney",
-//     "2gmel": "Melb",
-//     "3gbri": "Brisbane",
-//     "5gper": "Perth",
-//     "4gade": "Adelaide",
-//     "6ghob": "Hobart",
-//     "7gdar": "Dar",
-//     "8acte": "Canberra"
-// };
-//
-// const TotalTweetGcc = () => {
-//     const [data, setData] = useState([]);
-//
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const result = await axios('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_tweet_by_gcc?group=true');
-//                 const processedData = result.data.rows.filter(item => cityMap[item.key])
-//                     .map(item => ({ name: cityMap[item.key], value: item.value }));
-//                 setData(processedData);
-//             } catch (error) {
-//                 console.error('Error fetching data:', error);
-//             }
-//         };
-//
-//         fetchData();
-//     }, []);
-//
-//     return (
-//         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-//             <h1>Total Tweets by Greater Cities</h1>
-//             <BarChart
-//                 width={460}
-//                 height={220}
-//                 data={data}
-//                 margin={{
-//                     top: 0,
-//                     right: 10,
-//                     left: 10,
-//                     bottom: 3
-//                 }}
-//             >
-//                 <XAxis dataKey="name" />
-//                 <YAxis />
-//                 <Tooltip />
-//                 <Bar dataKey="value" fill="#2560a9" barSize={30}/>
-//             </BarChart>
-//         </div>
-//     );
-// };
-//
-// export default TotalTweetGcc;
-
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 import axios from 'axios';
@@ -152,12 +93,12 @@ export default function TotalTweetGcc() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await axios('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_tweet_by_gcc?group=true');
+                const result = await axios(process.env.REACT_APP_URL+'/geo_tweet/_design/General/_view/cnt_tweet_by_gcc?group=true');
                 const processedData = result.data.rows.filter(item => cityMap[item.key])
                     .map(item => ({name: cityMap[item.key], value: item.value}));
                 setData(processedData);
             } catch (error) {
-                console.error('Error fetching data:', error);
+
             }
         };
         fetchData();
@@ -172,7 +113,7 @@ export default function TotalTweetGcc() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <h1>Total Tweets by Greater Cities</h1>
+            <h1>Total Tweets by GCC</h1>
             <PieChart width={430} height={240}>
                 <Pie
                     activeIndex={activeIndex}

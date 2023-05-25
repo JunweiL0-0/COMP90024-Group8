@@ -8,6 +8,8 @@ import './App.css';
 import 'react-tooltip/dist/react-tooltip.css';
 
 
+console.log(process.env)
+
 const App = () => {
     return (
       <Router>

@@ -19,12 +19,12 @@ const SentimentGcc = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await axios('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_average_mood_by_gcc?group=true');
+                const result = await axios(process.env.REACT_APP_URL+'/geo_tweet/_design/General/_view/cnt_average_mood_by_gcc?group=true');
                 const processedData = result.data.rows.filter(item => cityMap[item.key])
                     .map(item => ({ name: cityMap[item.key], value: item.value.average_sentiment }));
                 setData(processedData);
             } catch (error) {
-                console.error('Error fetching data:', error);
+
             }
         };
 
@@ -33,16 +33,16 @@ const SentimentGcc = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <h1>Average Sentiment</h1>
+            <h1>Average Sentiment by GCC</h1>
             <BarChart
                 width={460}
-                height={220}
+                height={250}
                 data={data}
                 margin={{
                     top: 3,
-                    right: 10,
+                    right: 25,
                     left: 10,
-                    bottom: 10
+                    bottom: 40
                 }}
             >
                 <XAxis dataKey="name" angle={-15} textAnchor="end" interval={0}/>

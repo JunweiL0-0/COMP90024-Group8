@@ -10,14 +10,14 @@ export default function PieChartMood() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_tweet_by_mood?group=true');
+                const response = await axios.get(process.env.REACT_APP_URL+'/geo_tweet/_design/General/_view/cnt_tweet_by_mood?group=true');
                 const moodData = response.data.rows.map(item => ({
                     name: item.key,
                     value: item.value
                 }));
                 setChartData(moodData);
             } catch (error) {
-                console.error("Error fetching data: ", error);
+
             }
         };
         fetchData();
@@ -27,7 +27,7 @@ export default function PieChartMood() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <h1>Sentiment Ratio</h1>
+            <h1>Sentiment Distribution%</h1>
             <PieChart width={400} height={230}>
                 <Pie
                     data={chartData}

@@ -1,74 +1,15 @@
-// import React, { useState, useEffect } from 'react';
-// import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
-// import axios from 'axios';
-//
-// const cityMap = {
-//     "1gsyd": "Sydney",
-//     "2gmel": "Melb",
-//     "3gbri": "Brisbane",
-//     "5gper": "Perth",
-//     "4gade": "Adelaide",
-//     "6ghob": "Hobart",
-//     "7gdar": "Dar",
-//     "8acte": "Canberra"
-// };
-//
-// const CovidGccBarChart = () => {
-//     const [data, setData] = useState([]);
-//
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const result = await axios('http://172.26.131.106:8080/test_gcc/_design/General/_view/cnt_covid_tweet_by_gcc?group=true');
-//                 const processedData = result.data.rows.filter(item => cityMap[item.key])
-//                     .map(item => ({ name: cityMap[item.key], value: item.value.count_covid }));
-//                 setData(processedData);
-//             } catch (error) {
-//                 console.error('Error fetching data:', error);
-//             }
-//         };
-//
-//         fetchData();
-//     }, []);
-//
-//     return (
-//         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-//             <h1>Covid Tweets by Greater Cities</h1>
-//             <BarChart
-//                 width={460}
-//                 height={220}
-//                 data={data}
-//                 margin={{
-//                     top: 0,
-//                     right: 10,
-//                     left: 10,
-//                     bottom: 3
-//                 }}
-//             >
-//                 <XAxis dataKey="name" angle={-15} textAnchor="end" interval={0}/>
-//                 <YAxis />
-//                 <Tooltip />
-//                 <Bar dataKey="value" fill="#2560a9" barSize={30}/>
-//             </BarChart>
-//         </div>
-//     );
-// };
-//
-// export default CovidGccBarChart;
-
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 import axios from 'axios';
 
 const cityMap = {
     "1gsyd": "Sydney",
-    "2gmel": "Melb",
+    "2gmel": "Melbourne",
     "3gbri": "Brisbane",
     "5gper": "Perth",
     "4gade": "Adelaide",
     "6ghob": "Hobart",
-    "7gdar": "Dar",
+    "7gdar": "Darwin",
     "8acte": "Canberra"
 };
 
@@ -152,12 +93,12 @@ export default function CovidGccPieChart() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await axios('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_covid_tweet_by_gcc?group=true');
+                const result = await axios(process.env.REACT_APP_URL+'covid_twitter_data/_design/General/_view/cnt_covid_tweet_by_gcc?group=true');
                 const processedData = result.data.rows.filter(item => cityMap[item.key])
-                    .map(item => ({name: cityMap[item.key], value: item.value.count_covid}));
+                    .map(item => ({name: cityMap[item.key], value: item.value}));
                 setData(processedData);
             } catch (error) {
-                console.error('Error fetching data:', error);
+
             }
         };
         fetchData();
@@ -172,7 +113,7 @@ export default function CovidGccPieChart() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <h1>Covid Tweets by Greater Cities</h1>
+            <h1>COVID Tweets by GCC</h1>
             <PieChart width={430} height={240}>
                 <Pie
                     activeIndex={activeIndex}

@@ -19,11 +19,11 @@ const HospitalBarChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await axios('http://172.26.131.106:8080/hospital/_design/General/_view/cnt_hospital_by_gcc?reduce=true&group_level=1');
-                const processedData = result.data.rows.filter(item => cityMap[item.key]).map(item => ({ name: cityMap[item.key], value: item.value }));
+                const result = await axios(process.env.REACT_APP_URL+'/hospital/_design/General/_view/cnt_hospital_by_gcc?reduce=true&group_level=1');
+                const processedData = result.data.rows.filter(item => cityMap[item.key]).map(item => ({ name: cityMap[item.key], hospitals: item.value }));
                 setData(processedData);
             } catch (error) {
-                console.error('Error fetching data:', error);
+
             }
         };
 
@@ -32,23 +32,23 @@ const HospitalBarChart = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <h1>#Hospitals by Greater Cities</h1>
+            <h1>Hospital# by GCC</h1>
             <BarChart
                 width={460}
-                height={225}
+                height={235}
                 data={data}
                 margin={{
                     top: 5,
                     right: 10,
                     left: 10,
-                    bottom: 10
+                    bottom: 30
                 }}
             >
                 <XAxis dataKey="name" angle={-15} textAnchor="end" interval={0}/>
                 <YAxis />
                 <Tooltip />
 
-                <Bar dataKey="value" fill="#2560a9" barSize={30}/>
+                <Bar dataKey="hospitals" fill="#2560a9" barSize={30}/>
             </BarChart>
         </div>
     );

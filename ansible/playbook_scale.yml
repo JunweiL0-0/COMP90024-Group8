@@ -1,0 +1,6 @@
+- hosts: all
+  gather_facts: true
+  vars_files:
+    - host_vars/scaling_vars.yml
+  roles:
+    - role: scale

@@ -1,0 +1,17 @@
+---
+
+- name: Swarm mastodon social harvester
+  become: true
+  docker_swarm_service:
+    name: "{{ mastodon_masto_social.name }}"
+    image: "{{ mastodon_masto_social.image }}"
+    state: "{{ mastodon_masto_social.state }}"
+    env:
+      NAME: "{{ mastodon_masto_social.name }}"
+      TOKEN: "{{ mastodon_masto_social.token }}"
+      API_BASE_URL: "{{ mastodon_masto_social.api_base_url }}"
+      COUCHDB_URL: "http://172.26.131.23:5984"
+      COUCHDB_USERNAME: "{{ mastodon_masto_social.couchdb_username }}"
+      COUCHDB_PASSWORD: "{{ mastodon_masto_social.couchdb_password }}"
+      DB_TO_UPLOAD: "{{ mastodon_masto_social.db_to_upload }}"
+    replicas: "{{ mastodon_masto_social.replicas }}"

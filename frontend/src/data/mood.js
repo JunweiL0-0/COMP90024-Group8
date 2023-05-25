@@ -8,13 +8,13 @@ const CountMood = () => {
 
 
     useEffect(() => {
-        axios.get('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_tweet_by_mood_non_neutral')
+        axios.get(process.env.REACT_APP_URL+'/geo_tweet/_design/General/_view/cnt_tweet_by_mood_non_neutral')
             .then(response => {
                 const data = response.data.rows;
                 setTotalTwitter(data[0].value);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+
             });
 
     }, []); // Empty array makes this run only on component mount

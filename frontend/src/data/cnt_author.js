@@ -8,22 +8,22 @@ const CountAuthor = () => {
     const [totalMastodon, setTotalMastodon] = useState(0);
 
     useEffect(() => {
-        axios.get('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_author')
+        axios.get(process.env.REACT_APP_URL+'geo_tweet/_design/General/_view/cnt_author')
             .then(response => {
                 const data = response.data.rows;
                 setTotalTwitter(data[0].value);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+
             });
 
-        axios.get('http://172.26.131.106:8080/mastodon_data/_design/General/_view/cnt_account')
+        axios.get(process.env.REACT_APP_URL+'mastodon_data/_design/General/_view/cnt_account')
             .then(response => {
                 const data = response.data.rows;
                 setTotalMastodon(data[0].value);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+
             });
     }, []); // Empty array makes this run only on component mount
 

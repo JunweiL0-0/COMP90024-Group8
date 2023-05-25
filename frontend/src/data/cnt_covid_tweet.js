@@ -11,10 +11,10 @@ const CovidRatio = () => {
 
     useEffect(() => {
         const fetchCounts = async () => {
-            const response1 = axios.get('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_tweet');
-            const response2 = axios.get('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_covid_tweet');
-            const response3 = axios.get('http://172.26.131.106:8080/mastodon_data/_design/General/_view/cnt_post');
-            const response4 = axios.get('http://172.26.131.106:8080/mastodon_data/_design/General/_view/cnt_covid_post?group=true');
+            const response1 = axios.get(process.env.REACT_APP_URL+'geo_tweet/_design/General/_view/cnt_tweet');
+            const response2 = axios.get(process.env.REACT_APP_URL+'covid_twitter_data/_design/General/_view/cnt_covid_tweet');
+            const response3 = axios.get(process.env.REACT_APP_URL+'mastodon_data/_design/General/_view/cnt_post');
+            const response4 = axios.get(process.env.REACT_APP_URL+'mastodon_data/_design/General/_view/cnt_covid_post?group=true');
 
             const [res1, res2, res3, res4] = await Promise.all([response1, response2, response3, response4]);
 

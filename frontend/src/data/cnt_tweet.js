@@ -8,22 +8,22 @@ const CountTweet = () => {
     const [totalMastodon, setTotalMastodon] = useState(0);
 
     useEffect(() => {
-        axios.get('http://172.26.131.106:8080/geo_tweet/_design/General/_view/cnt_tweet')
+        axios.get(process.env.REACT_APP_URL+'geo_tweet/_design/General/_view/cnt_tweet')
             .then(response => {
                 const data = response.data.rows;
                 setTotalTwitter(data[0].value);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+
             });
 
-        axios.get('http://172.26.131.106:8080/mastodon_data/_design/General/_view/cnt_post')
+        axios.get(process.env.REACT_APP_URL+'mastodon_data/_design/General/_view/cnt_post')
             .then(response => {
                 const data = response.data.rows;
                 setTotalMastodon(data[0].value);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+
             });
     }, []); // Empty array makes this run only on component mount
 
@@ -34,7 +34,7 @@ const CountTweet = () => {
                 position="right top"
                 hoverable
             >
-                <div className="custom-popup">Twitter-huge</div>
+                <div className="custom-popup">Twitter</div>
             </Popup>
             <Popup
                 trigger={<h4><CountUp start={0} end={totalMastodon} /></h4>}

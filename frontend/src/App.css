@@ -58,11 +58,23 @@
 }
 
 .rounded-box {
+  text-align: justify;
   border-radius: 8px;
   background: #FFFFFF;
   min-width: 100px;
   max-width: 100%;
-  margin: 8px;
+  margin: 10px;
+  padding: 1px;
+  line-height: 1.3;
+}
+
+.rounded-box p{
+  margin: 20px;
+}
+
+.paragraph-spacing {
+  margin-top: 1em;
+  max-width: 100%;
 }
 
 .map-container {
@@ -72,7 +84,7 @@
 h1{
   text-align: center;
   font-size: 18px;
-  margin: 3px;
+  margin: 8px;
 }
 
 h2{
@@ -94,6 +106,20 @@ h2{
   width: 25%;
   height: 15vh;
   margin: 10px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.rounded-box2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #FFFFFF;
+  width: 20%;
+  height: 40vh;
+  margin: 8px;
   border-radius: 5px;
   padding: 5px;
 }
@@ -181,3 +207,22 @@ h2{
   border-radius: 3px;
 }
 
+h5{
+  text-align: center;
+  font-size: 18px;
+  margin: 8px;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.custom-tooltip {
+  margin: 3px;
+  padding: 10px;
+  background-color: #FFFFFF;
+  border: 1px solid #b3b3b3;;
+}
