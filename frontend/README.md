@@ -1,4 +1,4 @@
-- To run this app
+### To run this app
 
 -- create an .env file and put your backend url inside REACT_APP_url
 
