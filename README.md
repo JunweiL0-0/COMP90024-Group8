@@ -26,7 +26,7 @@
 [![Python][Python.js]][Python-url]
 
 
-<!-- MARKDOWN LINKS & IMAGES -->
+<!-- LINKS & IMAGES -->
 [author-1]: images/JunweiLiang.png
 [author-2]: images/ZichaoSang.png
 [author-3]: images/YumengDong.png
