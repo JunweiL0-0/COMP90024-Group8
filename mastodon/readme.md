@@ -1,4 +1,4 @@
-- run this app
+### To run this app
 
 -- provide you TOKEN COUCHDB_USERNAME COUCHDB_PASSWORD HOST API_BASE_URL inside you .env
 
