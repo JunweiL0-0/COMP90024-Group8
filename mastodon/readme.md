@@ -2,7 +2,7 @@
 
 -- provide you TOKEN COUCHDB_USERNAME COUCHDB_PASSWORD HOST API_BASE_URL inside you .env
 
--- insall python version > 9
+-- insall python version > 3.9
 
 -- create venv
 
