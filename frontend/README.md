@@ -11,4 +11,4 @@
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[frontend-screenshot]: images/front.png
+[frontend-screenshot]: ../images/front.png
