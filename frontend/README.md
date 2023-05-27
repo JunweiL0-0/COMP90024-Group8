@@ -2,7 +2,7 @@
 
 -- create an .env file and put your backend url inside REACT_APP_url
 
--- install npm
+-- install npm and required libraraies
 
 -- npm start and go to you localhost:3000
 
