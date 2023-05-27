@@ -5,3 +5,10 @@
 -- install npm
 
 -- npm start and go to you localhost:3000
+
+### Frontend screenshot
+![Frontend][frontend-screenshot]
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[frontend-screenshot]: images/front.png
