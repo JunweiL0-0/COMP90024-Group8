@@ -3,6 +3,8 @@ You can get all the endpoints by query '/'
 
 - To run this app
 
+-- create .env and put your HOST, USERNAE, PASSWORD inside
+
 -- install python & pip
 
 -- create venv
@@ -13,4 +15,3 @@ You can get all the endpoints by query '/'
 
 -- python3 app.py
 
--- remember to create .env and put your HOST USERNAE PASSWORD inside
